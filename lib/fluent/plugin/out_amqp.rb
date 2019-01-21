@@ -22,6 +22,7 @@ class AmqpOutput < Fluent::BufferedOutput
     super
     require "bunny"
     require "yajl"
+    require "date"
   end
 
   # This method is called before starting.
@@ -67,7 +68,7 @@ class AmqpOutput < Fluent::BufferedOutput
   # 'chunk.open {|io| ... }' to get IO objects.
   def write(chunk)
     chunk.msgpack_each do |(tag, time, record)|
-      event = @payload_only ? record : { "key" => tag, "timestamp" => time, "payload" => record }
+      event = @payload_only ? record : { "key" => tag, "timestamp" => time, "time" => DateTime.strptime(time.to_s, '%s'), "payload" => record }
       puboptions = { routing_key: tag, content_type: @content_type }
       if @priority
         puboptions[:priority] = @priority
