@@ -2,10 +2,12 @@
 
 Fluentd output plugin to publish events to an amqp broker.
 
+This project is a fork from the original [fluent-plugin-amqp](https://github.com/restorando/fluent-plugin-amqp). It adds a new _time_ field in the fluentd payload that is natively compatible with Elasticsearch date field and the possibility to set a custom routing key the AMQP Exchange.
+
 Events are published one by one using the Fluentd tag as the routing key by default, in JSON format like:
 
 ```javascript
-{ "key": "fluentd-tag", "timestamp": "fluentd-timestamp", "payload": "event-payload" }
+{ "key": "fluentd-tag", "timestamp": 1547769614, "payload": "event-payload", "time": "2019-01-21T01:18:39+00:00" }
 ```
 
 ## Installation
